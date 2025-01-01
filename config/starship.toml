@@ -1,0 +1,37 @@
+# https://starship.rs/
+
+# Disable the newline at the start of the prompt
+add_newline = true
+# Overwrite a default_prompt_order and  use custom prompt_order
+format = """\
+  $username\
+  $hostname\
+  $kubernetes\
+  $directory\
+  $git_branch\
+  $git_state\
+  $git_status\
+  $package\
+  $dotnet\
+  $golang\
+  $java\
+  $nodejs\
+  $python\
+  $ruby\
+  $rust\
+  $nix_shell\
+  $memory_usage\
+  $aws\
+  $env_var\
+  $cmd_duration\
+  $line_break\
+  $jobs\
+  $battery\
+  $time\
+  $character\
+"""
+
+[directory]
+truncation_length = 8
+truncate_to_repo = false
+use_logical_path = true
