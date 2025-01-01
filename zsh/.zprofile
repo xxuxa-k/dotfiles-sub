@@ -1,4 +1,6 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-fortune
+if type brew &>/dev/null; then
+  fortune
+fi
 

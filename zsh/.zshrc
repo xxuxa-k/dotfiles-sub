@@ -1,11 +1,19 @@
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-export PATH="/opt/homebrew/opt/curl/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export PATH="$HOME/slack-cli/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
+path=(
+  $(brew --prefix)/opt/curl/bin
+  $(brew --prefix)/opt/curl/openjdk/bin
+  $HOME/slack-cli/bin
+  $HOME/go/bin
+  $path
+)
+fpath=(
+  ${ASDF_DIR}/completions
+  $(brew --prefix)/share/zsh-completions
+  $fpath
+)
 
 export EDITOR=nvim
 export GIT_EDITOR=nvim
@@ -25,42 +33,52 @@ source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 source "$(brew --prefix asdf)/libexec/asdf.sh"
 
-autoload bashcompinit && bashcompinit
+autoload -Uz compinit bashcompinit 
+compinit bashcompinit
 complete -C '/usr/local/bin/aws_completer' aws
-
-# fpath=(${ASDF_DIR}/completions $fpath)
-# autoload -Uz compinit && compinit
-
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-
-  autoload -Uz compinit
-  compinit
-fi
-
 
 alias ll="eza -ahl --git"
 alias nv="nvim"
-alias nvi="nvim"
 alias beep="afplay /System/Library/Sounds/Ping.aiff"
 
 function peco-src() {
-  local repo=$(ghq list | peco --query "$LBUFFER")
-  if [ -n "$repo" ]; then
-    repo=$(ghq list --full-path --exact $repo)
-    BUFFER="cd ${repo}"
-    zle accept-line
+emulate -L zsh
+setopt localoptions pipefail
+
+local repo
+repo=$(ghq list | peco --query "$LBUFFER") || return 1
+
+if [[ -n "$repo" ]]; then
+  local full_path
+  full_path=$(ghq list --full-path --exact "$repo") || return 1
+
+  if [[ ! -d "$full_path" ]]; then
+    echo "Error: Directory does not exist: $full_path" >&2
+    return 1
   fi
-  zle clear-screen
+
+  BUFFER="cd ${(q)full_path}"
+  zle accept-line
+fi
+zle clear-screen
 }
-zle -N peco-src
-bindkey '^]' peco-src
 
 function peco-select-history() {
-  BUFFER=$(history -n -r 1 | peco --query "$LBUFFER")
+emulate -L zsh
+setopt localoptions pipefail
+
+local selected
+selected=$(fc -ln 1 | awk '!seen[$0]++' | peco --query "$LBUFFER") || return 1
+
+if [[ -n "$selected" ]]; then
+  BUFFER="${selected}"
   CURSOR=$#BUFFER
   zle reset-prompt
+fi
 }
-zle -N peco-select-history
-bindkey '^r' peco-select-history
 
+zle -N peco-src
+zle -N peco-select-history
+
+bindkey '^]' peco-src
+bindkey '^r' peco-select-history
