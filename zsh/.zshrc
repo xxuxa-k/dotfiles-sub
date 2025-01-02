@@ -4,7 +4,7 @@ fi
 
 path=(
   $(brew --prefix)/opt/curl/bin
-  $(brew --prefix)/opt/curl/openjdk/bin
+  $(brew --prefix)/opt/openjdk/bin
   $HOME/slack-cli/bin
   $HOME/go/bin
   $path
