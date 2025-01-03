@@ -45,6 +45,7 @@ return {
         })
       end
 
+      nvim_lsp.bashls.setup({})
       nvim_lsp.denols.setup({
         root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
       })
