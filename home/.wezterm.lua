@@ -15,7 +15,7 @@ config.macos_window_background_blur = 20
 config.use_fancy_tab_bar = true
 config.use_ime = true
 config.enable_tab_bar = false
-config.window_decorations = "RESIZE"
+config.window_decorations = "RESIZE | TITLE"
 
 config.send_composed_key_when_left_alt_is_pressed = true
 

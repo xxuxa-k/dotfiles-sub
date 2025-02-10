@@ -83,17 +83,21 @@ return {
   {
     "folke/trouble.nvim",
     cmd = "Trouble",
-    opts = {
-      win = {
-        wo = {
-          wrap = true,
-        },
-      },
-    },
     keys = {
       {
-        "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)",
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<CR>",
+        desc = "Diagnostics (Trouble)",
       }
     },
+    config = function()
+      require('trouble').setup({
+        win = {
+          wo = {
+            wrap = true,
+          },
+        },
+      })
+    end,
   },
 }

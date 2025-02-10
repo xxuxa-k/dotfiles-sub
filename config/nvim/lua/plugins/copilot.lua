@@ -3,13 +3,11 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        suggestion = {
-          enabled = true,
-        },
-      })
-    end,
+    opts = {
+      suggestion = {
+        enabled = true,
+      },
+    },
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",

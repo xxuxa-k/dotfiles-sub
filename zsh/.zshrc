@@ -7,6 +7,7 @@ path=(
   $(brew --prefix)/opt/openjdk/bin
   $HOME/slack-cli/bin
   $HOME/go/bin
+  $HOME/.asdf/shims
   $path
 )
 fpath=(
@@ -31,7 +32,6 @@ eval "$(zoxide init zsh)"
 
 source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
-source "$(brew --prefix asdf)/libexec/asdf.sh"
 
 autoload -Uz compinit bashcompinit 
 compinit bashcompinit
