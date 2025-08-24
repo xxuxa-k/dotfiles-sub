@@ -5,13 +5,10 @@ fi
 path=(
   $(brew --prefix)/opt/curl/bin
   $(brew --prefix)/opt/openjdk/bin
-  $HOME/slack-cli/bin
   $HOME/go/bin
-  $HOME/.asdf/shims
   $path
 )
 fpath=(
-  ${ASDF_DIR}/completions
   $(brew --prefix)/share/zsh-completions
   $fpath
 )
